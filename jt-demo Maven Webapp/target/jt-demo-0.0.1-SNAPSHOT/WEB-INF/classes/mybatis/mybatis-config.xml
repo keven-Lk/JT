@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+    
+<!-- MyBatis的全局配置文件 -->
+<configuration >
+	<!-- 关于驼峰映射的说明
+		例子:
+			表名user(user_id,user_name,user_age...)
+			对象User{userId,userName,userAge}
+			问题:使用mybatis进行结果映射时resultType不能使用,
+			只能使用resultMap完成,给用户使用不便,
+			
+			升级:引入驼峰映射规则,
+			将字段中的"_"自动的去除,并且之后的字母首字母大写
+			user_id~~~userId~~~~之后使用resultType映射到User对象中
+	 -->
+	<settings>
+	<!-- 开启驼峰自动映射 -->
+	<setting name = "mapUnderscoreToCamelCase" value = "true"></setting>
+	<!-- 二级缓存的总开关,被redis替代 -->	
+	</settings>
+</configuration>
+

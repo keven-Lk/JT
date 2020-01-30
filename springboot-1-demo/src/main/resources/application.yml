@@ -1,0 +1,40 @@
+#如果是多环境测试,则必须指定默认环境
+spring:
+   profiles:
+      active: test
+
+--- #定义分割环境
+spring:
+    profiles: dev
+#yml是有层级关系的 1.必须注意缩进 2.key与值之间使用:号连接 注意" "空格
+server:
+  port: 8091 
+  servlet:
+    context-path: /
+    
+#可以通过yml文件实现对象属性赋值
+#当使用spring容器启动时加载该配置'
+#如果使用user.name当做可以 会自动获取当前计算机用户名
+user: 
+  id: 100
+  userName: 开哨
+  age: 18
+  sex: 其它
+  
+--- #分割环境
+spring:
+  profiles: test
+#yml是有层级关系的 1.必须注意缩进 2.key与值之间使用:号连接 注意" "空格
+server:
+  port: 9000 
+  servlet:
+    context-path: /1812
+    
+#可以通过yml文件实现对象属性赋值
+#当使用spring容器启动时加载该配置'
+#如果使用user.name当做可以 会自动获取当前计算机用户名
+user: 
+  id: 1812
+  userName: 多环境测试
+  age: 200
+  sex: 其它

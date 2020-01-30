@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Built-By: Administrator
+Build-Jdk: 11.0.2
+Implementation-Title: dubbo-demo-provider1
+Implementation-Version: 0.0.1-SNAPSHOT
+Implementation-Vendor-Id: com.jt.1812
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-boot
+ -starter-parent/dubbo-demo/dubbo-demo-provider1
+Created-By: Maven Integration for Eclipse
+

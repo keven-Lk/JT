@@ -1,0 +1,9 @@
+server:
+  port: 9001
+dubbo:
+  scan:
+    basePackages: com.jt
+  application:
+    name: consumer-user #服务名称
+  registry:
+    address: zookeeper://192.168.96.133:2181?backup=192.168.96.133:2182,192.168.96.133:2183

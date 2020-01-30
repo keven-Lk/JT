@@ -1,0 +1,8 @@
+-------------------------------------------------------------------------------
+Test set: com.jt.redis.TestRedisSentinel
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 1.014 s <<< FAILURE! - in com.jt.redis.TestRedisSentinel
+test01(com.jt.redis.TestRedisSentinel)  Time elapsed: 1.012 s  <<< ERROR!
+redis.clients.jedis.exceptions.JedisConnectionException: All sentinels down, cannot determine where is mymaster master is running...
+	at com.jt.redis.TestRedisSentinel.test01(TestRedisSentinel.java:20)
+

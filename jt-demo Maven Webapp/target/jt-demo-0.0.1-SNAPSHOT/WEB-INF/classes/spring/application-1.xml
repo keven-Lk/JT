@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd
+        
+        http://www.springframework.org/schema/tx 
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        
+        http://www.springframework.org/schema/mvc 
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        
+        http://www.springframework.org/schema/util 
+        http://www.springframework.org/schema/util/spring-util.xsd
+        
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+	<!-- 1.开启包扫描
+		包扫描作用域:当前包以及所有的子孙包都要扫描 
+		*号代表1级包路径
+		**代表任意级包路径-->
+	<context:component-scan base-package="com.jt"/>
+	
+	<!-- 2.整合DruidDateSource对象(基于此对象提供与数据库连接) -->
+	<!-- 2.1spring同期添加properties配置文件 -->
+	 <context:property-placeholder location="classpath:/properties/*.properties"/>
+	<!-- 
+	<util:property-path path=""/>
+	<util:list id = "list">
+			<value>1</value>
+	</util:list>
+	<util:map id = "map">
+		<entry key"a">a</entry>
+	</util:map>
+	<util:properties id = "pro" location="claspath:/..."></util:properties>
+	 -->
+	 
+	<!-- 关于使用集合的说明 使用util标签引入集合时需要注意
+		必须使用#{Id或id.key}
+		引入文件层级只能写一级,否则程序解析异常
+		例如:
+		username=root
+		password=root
+		
+		总结:
+		从spring容器中取值使用${}
+		从集合中取值使用#{}
+	 -->
+	
+	<!-- 2.2管理数据源 -->
+	<bean id="dataSource"
+		class="com.alibaba.druid.pool.DruidDataSource">
+		<!-- 基于set方法为对象属性赋值(set注入) -->
+		<property name="driverClassName" value="${jdbc.driver}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+	</bean>
+	
+	<!-- 3.开启事务标签 -->
+	<tx:annotation-driven/>
+	
+	<!-- 4.spring整合mybatis -->
+	<bean class = "org.mybatis.spring.SqlSessionFactoryBean">
+	<!-- mybatis导入数据源 -->
+		<property name="dataSource" ref = "dataSource"/>
+		<property name="configLocation" value = "classpath:/mybatis/mybatis-config.xml"/>
+		<property name="mapperLocations" value = "classpath:/mybatis/mappers/*.xml"/>
+		<!-- 添加别名配置包 -->
+		<property name="typeAliasesPackage" value="com.jt.pojo"/>
+	</bean>
+	
+	
+	<!-- 创建代理对象的策略:
+			如果被代理者,如果有接口,那么采用JDK代理方式
+			JDK代理实质上就是接口的实现类.
+			
+			如果被代理者,如果接口.则使用CGLIB创建代理.
+			代理对象是被代理者的子类. -->
+	
+	<!-- 4.配置mapper接口代理 -->
+	<bean class = "org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value = "com.jt.mapper"/>
+	</bean>
+	
+	<!-- 配置MVC 1.开启mvc注解标签 2.配置视图解析器 3.放行静态资源 -->
+	<mvc:annotation-driven/>
+	
+	<!-- 内部资源视图解析器 -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value = "/WEB-INF/"/>
+		<property name="suffix" value = ".jsp"/>
+	</bean>
+	
+	<!-- web.xml文件中的<url-pattern>/</url-pattern>
+		1.拦截所有的请求
+		2.同时拦截静态资源文件 css/js/image
+		/*和/的区别:/*以上两步同样满足 但是不能放行jsp等动态页面
+		3.放行.jsp等动态页面
+		以下配置表示放行静态资源
+	 -->
+	<mvc:default-servlet-handler/>
+	
+</beans>
